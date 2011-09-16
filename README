@@ -1,5 +1,52 @@
-Project: avr-autobiome
-Started: Wed Sep 14th, 2011
 
+This is a hobby project intended to build 
 Description: The AVR Automated Biome project is an attempt to create a generic environmental controller suitable
 for a small to medium enclosure.
+
+The project directory layout is:
+
+/avr-autobiome
+  |
+  |
+    autobiome
+  |     - Header files
+  |
+    doc
+  |     - Documentation and specifications
+  |
+    src
+  |     - Actual source code
+
+
+Prerequisites:
+    You will need avr-binutils and avr-gcc/g++ to assemble and compile the binaries.  A bootloader
+    or programmer will be needed to load the resulting firmware into the system.   The environment
+    variables "LOADER" and "LOADER_FLAGS" will need to be set to the proper command and flags to
+    run your loader or programmer.  dot and doxygen are required to rebuild the documentation.
+    The default is not to rebuild the documentation so you don't actually need dot or doxygen.
+
+This uses the standard gnu build environment.  Run ./configure --help to see the options available.
+The actual steps to build this are the standard gnu:
+
+1)  ./configure --host=avr
+
+2)  make
+
+3)  make install
+
+To strip and create the actual hex file, the make target is "binary_name.hex". For example to create the
+hex file "autobiome.hex" we would substitute "autobiome" for "binary_name":
+
+   make autobiome.hex
+
+To load the resulting firmware, the make target is "binary_name.load".  Again substituting
+"autobiome" for "binary_name" we get:
+
+   make autobiome.load
+
+Making this target will compile the project and load it onto your AVR.  Again, please run
+
+  ../configure --help
+
+to get the currently available options.
+
