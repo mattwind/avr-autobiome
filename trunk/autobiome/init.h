@@ -15,7 +15,7 @@ unsigned
 init( void ) ;
 
 void
-switch_power_led_on( void ) ;
+led_switch( const bool on ) ;
 
 
 #endif  /* #ifndef AUTOBIOME_INIT_H */
