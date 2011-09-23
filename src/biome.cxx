@@ -6,38 +6,37 @@
 #include "autobiome/init.h"
 
 
-enum Switches
-{
-
-  on  = true ,
-  off = false
-
-} /* enum Switches */
-
-
 //const   Baud_Register  baud_reg_val =  baud_38400 ;
 
 void
-init() ;
-  
+teensy_usb_init() ;
+
+
 int
 main()
 {
   // init( baud_reg_val ) ;
-  init() ;
-
-  while( true )
-  {
-
-  } /* while */
-
+  teensy_usb_init() ;
+ 
   return  0 ;
 
 } /* main() */
 
-void
-init()
-{
-  led_switch( on )
 
-} /* init() */
+void
+led_on()
+{
+  DDRD  = -1 ;
+  PORTD = -1 ;
+
+} /* led_on() */
+
+
+void
+teensy_usb_init()
+{
+  //led_on() ;
+  init_avr() ;
+
+} /* teensy_usb_init() */
+

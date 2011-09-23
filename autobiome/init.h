@@ -1,21 +1,16 @@
 #ifndef AUTOBIOME_INIT_H
   #define AUTOBIOME_INIT_H
 
+extern "C"
+{
 
-/* Systemwide C Headers */
-#include <avr/io.h>
-
-
-#define  LED_BIT  6
-#define  LED_DDR  DDRD
-#define  LED_PORT PORTD
-
-
-unsigned
-init( void ) ;
+void
+init_avr( void ) ;
 
 void
 led_switch( const bool on ) ;
 
+
+} /* extern "C" */
 
 #endif  /* #ifndef AUTOBIOME_INIT_H */

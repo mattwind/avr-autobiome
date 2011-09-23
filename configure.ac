@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.65])
 AC_INIT([avr-autobiome], [0.0.1], [pete@petenix.org])
+AM_INIT_AUTOMAKE([avr-autobiome], [0.0.1], [pete@petenix.org])
 AC_CONFIG_SRCDIR([src/biome.cxx])
 AC_CONFIG_HEADERS([config.h])
 
@@ -20,7 +21,7 @@ AM_PROG_AS
 
 # Check for the avr-ar and avr-objcopy programs
 AVR_CHECK_AR
-AVR_CHECK_AVRDUDE
+AVR_CHECK_LOADER
 AVR_CHECK_OBJCOPY
 
 

@@ -1,20 +1,33 @@
 
 
 /* Project Local C Headers */
-#include "autobiome/init.h"
+#include "autobiome/asm_defs.h"
 
 
-init:
-  rcall switch_power_led_on
+.section  .text
+.global   init_avr
+.global   init_avr_regs
+.global   led_switch
 
+
+init_avr:
+  rcall init_avr_regs
+  rcall led_switch
 ret
 
 
-switch_power_led:
+init_avr_regs:
+  ; Usually r1 is constant 0 by convention on the AVR.  The startup code from
+  ; avr-libc will clear r1 as well but who knows if we are using avr-libc? :)
+  clr   r1 
+  clr   r31
+ret
+
+
+led_switch:
   ; Set the direction register so that the LED bit is digital output
-  sti   LED_DDR   , 1 << LED_BIT
-
-  ; And set that bit high on the port
-  sti   LED_PORT  , 1 << LED_BIT
-
+  ldi   r30 , LED_DDR
+  ldi   r24 , 1 << LED_BIT
+  st    Z+ , r24
+  st    Z , r24
 ret
