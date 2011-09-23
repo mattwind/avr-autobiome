@@ -10,9 +10,8 @@ fi]
 )
 
 
-# Check for the existence of our program loader
-AC_DEFUN([AVR_CHECK_LOADER]
-[AC_CHECK_PROG([AVR_LOADER], [teensy_loader_cli], [teensy_loader_cli]) 
+# Check for the existence of an AVR program (hex) loader
+AC_DEFUN([AVR_CHECK_LOADER], [AC_CHECK_PROG([AVR_LOADER], [teensy_loader_cli], [$as_dir/$ac_word$ac_exec_ext]) 
 
 if test "x" = "x$AVR_LOADER" ;
 then

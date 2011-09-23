@@ -4,14 +4,19 @@
 # The first will be passed to the compiler/assembler to indicate the proper avr chip or device
 #MCU_FLAG                = -mmcu=atmega128
 
+
+# Tell autoreconf to get m4 files from our m4 directory
+ACLOCAL_AMFLAGS                 = -I m4
+
+
 # Where to find the AVR  stuff
 AVR_DIR                         = $(prefix)
 
 # This will be passed to LOADER/PROGRAMMER as is, whatever you want the loader to do, this is what you change
-LOADER_FLAGS                    = -c avrispmkII -p m128 -P usb
+LOADER_FLAGS                    = -v $(MCU_FLAG) -w
 
 # The headers we want to install when the library gets installed
-include_HEADERS                 = biome/init.h
+include_HEADERS                 = autobiome/init.h
 
 
 # The list of programs will are making.  These binaries can be written to the AVR device
@@ -35,8 +40,8 @@ LDADD                           = libAVR_Biome.a -L $(AVR_DIR)/lib
 %.hex:%.bin
 	$(OBJCOPY)  -j .data -j .text -O ihex $< $@
 
-# To do the actual flashing we are going to use whatever the variables $LOAD and $LOAD_FLAGS
+# To do the actual flashing we are going to use whatever the variables $AVR_LOADER and $LOADER_FLAGS
 # contain.
 %.write:%.hex
-	$(LOAD) $(LOAD_FLAGS) -e -U flash:w:$^
+	$(AVR_LOADER) $(LOADER_FLAGS) $^
 
