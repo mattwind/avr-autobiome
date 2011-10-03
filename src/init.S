@@ -26,8 +26,12 @@ ret
 
 led_switch:
   ; Set the direction register so that the LED bit is digital output
+  ; Note we are using incremented addressing (Z+) so this depends on the 
+  ; LED port being the next register after the direction port (DDR)
   ldi   r30 , LED_DDR
   ldi   r24 , 1 << LED_BIT
   st    Z+ , r24
   st    Z , r24
 ret
+
+
