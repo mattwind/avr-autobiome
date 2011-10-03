@@ -1,0 +1,34 @@
+
+Fri Sep 30 14:45:04 UTC 2011
+Began work in earnest on AVR Biome today.  Let's try to be Stonewall Jackson
+and "Do something, men!"  Started cleaning up work area and getting test equipment together.
+
+
+Fri Sep 30 15:45:00 UTC 2011
+Knocked off
+
+
+Fri Sep 30 17:02:46 UTC 2011
+Started again, have to wire up Mavric II board
+
+
+
+Fri Sep 30 18:09:18 UTC 2011
+Got Wheatstone wired on new circuit board. Had devil of a time connecting Mavric to the breadboard,
+need screw terminal headers and jumper kit.
+
+
+Fri Sep 30 20:02:23 UTC 2011
+Finally got Mavric connected properly.  Scavenged pin/socket wires to connect
+Mavric to the breadboard.  I have the + side of the bridge connected to pin F1
+and the - side of the bridge connected to pin F0 of the Mavric II.  I am reading
+about 25mv across the Wheatstone bridge at 24.7 C.  If i approach the thing
+the voltage drops to about 15mv.
+
+Sun Oct  2 05:33:10 UTC 2011
+Somehow managed to destroy one Atmega128 Chip.  Thankful to Cathy for
+supplying and soldering a replacement.  Had to set the fuses on the
+replacement chip.  Note the invalid device ID starting with "103" is fixed by
+unprogramming the Atmega103 compatibility fuse.
+
+
