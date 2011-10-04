@@ -9,14 +9,18 @@
 //const   Baud_Register  baud_reg_val =  baud_38400 ;
 
 void
-teensy_usb_init() ;
+device_init() ;
+
+
+void
+do_work() ;
 
 
 int
 main()
 {
-  // init( baud_reg_val ) ;
-  teensy_usb_init() ;
+  device_init() ;
+  do_work() ;
  
   return  0 ;
 
@@ -24,19 +28,26 @@ main()
 
 
 void
-led_on()
+device_init()
 {
-  DDRD  = -1 ;
-  PORTD = -1 ;
+  comm_init() ;
+  init_avr() ;
 
-} /* led_on() */
+} /* device_init() */
 
 
 void
-teensy_usb_init()
+do_work()
 {
-  //led_on() ;
-  init_avr() ;
+  // Using "BEEF" as a hex value helps catch endianess errors
+  uint16_t  adc_value = 0xBEEF ;
 
-} /* teensy_usb_init() */
+  while( 1 )
+  {
+    adc_value = read_data() ;
 
+    write_data( adc_value ) ;
+
+  } /* while */
+
+} /* do_work() */
