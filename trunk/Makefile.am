@@ -27,12 +27,12 @@ bin_PROGRAMS                    = biome.bin
 lib_LIBRARIES                   = libAVR_Biome.a
 
 # This is our "main" program, the actual binary we will load and execute
-biome_bin_SOURCES               = src/biome.cxx
+biome_bin_SOURCES               = src/biome.cxx src/main.cxx
 
 # The source files that make up our library
-libAVR_Biome_a_SOURCES          = src/init.S
+libAVR_Biome_a_SOURCES          = src/init.S src/logger.S src/read_adc.S src/startup.cxx
 
-LDADD                           = libAVR_Biome.a -L $(AVR_DIR)/lib
+LDADD                           = libAVR_Biome.a -L $(AVR_DIR)/lib -lAVR_Com
 
 
 # This is where we take off into AVR land.  Our program.bin files are what would normally be an
