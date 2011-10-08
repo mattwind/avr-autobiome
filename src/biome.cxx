@@ -38,7 +38,7 @@ void
 delay_loop()
 {
   //  This is just a generic delay loop
-  for( uint16_t i = 0 ; i < 0x3 ; i++ )
+  for( uint16_t i = 0 ; i < 0x70 ; i++ )
   {
     for( uint16_t j = 0 ; j < 0xFFFF ; j++ )
     {
@@ -62,22 +62,34 @@ device_init()
 void
 do_work()
 {
+  const size_t            sample_size = 16 ;
+
   // Create our serial port 
   AVR_Comm::Serial_Port   uart_01( baud_rate ) ;
 
   // Create our IO stream from that serial port
   Comm_Stream             console( uart_01 ) ;
 
-  // Using "BEEF" as a hex value helps catch endianess errors
-  uint16_t                adc_value = 0xBEEF ;
-
   while( true )
   {
-    adc_value = read_data() ;
+    int32_t               adc_value  = 0 ;
+    int16_t               millivolts = 0 ;
 
-    console << adc_value << "\r\n" ;
+    for( size_t i = 0 ; i < sample_size ; i++ )
+    {
+      adc_value   += read_data() ;
 
-    delay_loop() ;
+      delay_loop() ;
+
+    } /* for */
+
+    adc_value   /= sample_size ;
+    // We are using an internal reference voltage of 2560 millivolts and a gain of 1.  The actual
+    // voltage reading per page 241 of the Atmel Datasheet doc2467.pdf is  adc_value * gain * v_ref / 512
+    // or in our case, 1 * 2560 / 512 = 5 
+    millivolts  += adc_value * 5 ;
+
+    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << "\t" << millivolts << "\r\n" ;
 
   } /* while */
 
