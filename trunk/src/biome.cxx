@@ -62,7 +62,7 @@ device_init()
 void
 do_work()
 {
-  const size_t            sample_size = 16 ;
+  const int8_t            sample_size = 16 ;
 
   // Create our serial port 
   AVR_Comm::Serial_Port   uart_01( baud_rate ) ;
@@ -75,7 +75,7 @@ do_work()
     int32_t               adc_value  = 0 ;
     int16_t               millivolts = 0 ;
 
-    for( size_t i = 0 ; i < sample_size ; i++ )
+    for( int8_t i = 0 ; i < sample_size ; i++ )
     {
       adc_value   += read_data() ;
 
