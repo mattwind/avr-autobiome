@@ -17,6 +17,7 @@
 // Project Local C++ Headers
 #include "autobiome/biome.hxx"
 #include "autobiome/startup.hxx"
+#include "autobiome/wheatstone.hxx"
 
 
 namespace Autobiome
@@ -26,6 +27,11 @@ namespace Autobiome
 // This type define doesn't add any abstraction to our program, it is just here because the
 // actual template data type is nothing but long meaningless text
 typedef  std::basic_ioserialstream< char , std::char_traits< char > , AVR_Comm::Serial_Port > Comm_Stream ;
+
+
+// A constant for the resistance of our bridge legs
+const uint16_t  bridge_leg_ohms   = 9700 ;
+const uint16_t  input_millivolts  = 5120 ;
 
 
 //  This is just a generic delay loop
@@ -83,13 +89,16 @@ do_work()
 
     } /* for */
 
-    adc_value   /= sample_size ;
+    adc_value /= sample_size ;
+
     // We are using an internal reference voltage of 2560 millivolts and a gain of 1.  The actual
     // voltage reading per page 241 of the Atmel Datasheet doc2467.pdf is  adc_value * gain * v_ref / 512
     // or in our case, 1 * 2560 / 512 = 5 
     millivolts  += adc_value * 5 ;
 
-    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << "\t" << millivolts << "\r\n" ;
+    const uint16_t  therm_ohms  = wheatstone_resistance( bridge_leg_ohms , input_millivolts , millivolts ) ;
+
+    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << millivolts << '\t' << therm_ohms << "\r\n" ;
 
   } /* while */
 

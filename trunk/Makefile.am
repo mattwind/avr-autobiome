@@ -30,7 +30,7 @@ lib_LIBRARIES                   = libAVR_Biome.a
 biome_bin_SOURCES               = src/biome.cxx src/main.cxx
 
 # The source files that make up our library
-libAVR_Biome_a_SOURCES          = src/init.S src/logger.S src/read_adc.S src/startup.cxx
+libAVR_Biome_a_SOURCES          = src/init.S src/logger.S src/read_adc.S src/startup.cxx src/wheatstone.cxx
 
 LDADD                           = libAVR_Biome.a -L $(AVR_DIR)/lib -lAVR_Com
 
