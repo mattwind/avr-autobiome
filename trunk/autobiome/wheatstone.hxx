@@ -16,6 +16,22 @@ typedef double      Voltage ;
 
 
 /**
+ * Calculates the balance ratio (2Vb/Vi) of a Wheatstone Bridge
+ *
+ * @param         bridge
+ *    The voltage measured across the bridge
+ *
+ * @param         input
+ *    The input voltage to the Wheatstone loop
+ *
+ * @return
+ *    The ratio  2.0 * bridge / input 
+ */
+double
+bridge_balance( const Voltage bridge , const Voltage input ) ;
+
+
+/**
  * This calculates the actual temperature of a thermistor given it's measured resistance in
  * Ohms and the beta value (thermistor constant) for the thermistor's family.
  *
