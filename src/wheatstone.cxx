@@ -12,18 +12,36 @@ namespace Autobiome
 {
 
 
-uint16_t
-wheatstone_resistance( const uint16_t ohms , const uint16_t input_millivolts , const uint16_t bridge_millivolts )
+double
+thermistor_temp(
+    const Resistance therm_ohms ,
+    const Kelvin base_temp ,
+    const Resistance base_ohms ,
+    const Therm_Beta b_val
+    )
 {
-  uint16_t      unknown_ohms = 0 ;
+  double      resistance_ratio  = therm_ohms / base_ohms ;
+  double      kelvin_temp       = log( resistance_ratio ) / b_val ;
+
+  kelvin_temp += 1 / base_temp ;
+
+  return  kelvin_temp ;
+
+} /* thermistor_temp( const Resistance , const Kelvin , const Resistance , const Thermistor_Beta ) */
+
+
+Resistance
+wheatstone_resistance( const Voltage bridge , const Voltage input , const Resistance ohms )
+{
+  Resistance    unknown_ohms = 0 ;
 
   // We need to make sure none of our input values are 0
   CHECK_NOT_ZERO( ohms ) ;
-  CHECK_NOT_ZERO( input_millivolts ) ;
-  CHECK_NOT_ZERO( bridge_millivolts ) ;
+  CHECK_NOT_ZERO( input ) ;
+  CHECK_NOT_ZERO( bridge ) ;
 
   // This calculates the 2Vb/Vi constant that repeats in the Wheatstone bridge equation
-  const double  bridge_K    = 2.0L * bridge_millivolts / (double) input_millivolts ;
+  const double  bridge_K    = 2.0 * bridge / (double) input ;
   const double  denominator = 1 - bridge_K ;
   const double  numerator   = 1 + bridge_K ;
 
@@ -34,11 +52,11 @@ wheatstone_resistance( const uint16_t ohms , const uint16_t input_millivolts , c
 
   } /* if */
 
-  unknown_ohms = static_cast< uint16_t > ( round ( ohms * numerator / denominator ) ) ;
+  unknown_ohms = ohms * numerator / denominator ;
 
   return  unknown_ohms ;
 
-} /* wheatstone_resistance( const uint16_t , const uint16_t , const uint16_t ) */
+} /* wheatstone_resistance( const Voltage , const Voltage , const Resistance ) */
 
 
 } /* namespace Autobiome */
