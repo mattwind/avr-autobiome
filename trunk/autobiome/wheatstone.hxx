@@ -10,9 +10,9 @@ namespace Autobiome
 
 typedef double      Centigrade ;
 typedef double      Kelvin ;
-typedef double      Resistance ;
+typedef uint32_t    Resistance ;
 typedef uint16_t    Therm_Beta ;
-typedef double      Voltage ;
+typedef int16_t     Voltage ;
 
 
 /**

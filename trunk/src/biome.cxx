@@ -5,6 +5,7 @@
 
 // Systemwide C++ Headers
 #include <Serial_Port.hxx>
+#include <iomanip>
 #include <iostream>
 #include <serstream>
 
@@ -81,8 +82,7 @@ do_work()
 
   while( true )
   {
-    int32_t               adc_value         = 0 ;
-    Voltage               bridge_millivolts = 0 ;
+    int16_t               adc_value         = 0 ;
 
     for( int8_t i = 0 ; i < sample_size ; i++ )
     {
@@ -97,15 +97,14 @@ do_work()
     // We are using an internal reference voltage of 2560 millivolts and a gain of 1.  The actual
     // voltage reading per page 241 of the Atmel Datasheet doc2467.pdf is  adc_value * gain * v_ref / 512
     // or in our case, 1 * 2560 / 512 = 5 
-    bridge_millivolts  += adc_value * 5 ;
-
-    const Resistance  therm_ohms  = wheatstone_resistance( bridge_millivolts , input_millivolts , bridge_leg_ohms ) ;
-    const Kelvin      k_temp      = thermistor_temp( therm_ohms , base_temp , base_ohms , ntc_beta ) ;
-    const Centigrade  c_temp      = k_temp - 273.15 ;
+    const Voltage     bridge_millivolts = adc_value * 5 ;
+    const Resistance  therm_ohms        = wheatstone_resistance( bridge_millivolts , input_millivolts , bridge_leg_ohms ) ;
+    const Kelvin      k_temp            = thermistor_temp( therm_ohms , base_temp , base_ohms , ntc_beta ) ;
+    const Centigrade  c_temp            = k_temp - 273.15 ;
 
     //console << "Bridge MV = " << millivolts << "\tInput MV = " << input_millivolts << "\r\n" ;
 
-    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << bridge_millivolts
+    console << std::hex << std::setw( 2 ) << adc_value << '\t' << std::dec << (int) adc_value << '\t' << bridge_millivolts
             << '\t' << therm_ohms << '\t' << k_temp << '\t' << c_temp << "\r\n" ;
 
   } /* while */

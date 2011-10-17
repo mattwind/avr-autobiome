@@ -15,9 +15,7 @@ namespace Autobiome
 double
 bridge_balance( const Voltage bridge , const Voltage input )
 {
-  double  balance_ratio = bridge / input ;
-
-  balance_ratio *= 2 ;
+  double  balance_ratio = 2.0L * bridge / input ;
 
   return  balance_ratio ;
 
@@ -32,7 +30,7 @@ thermistor_temp(
     const Therm_Beta b_val
     )
 {
-  double      resistance_ratio  = therm_ohms / base_ohms ;
+  double      resistance_ratio  = (double) therm_ohms / base_ohms ;
   double      kelvin_temp       = log( resistance_ratio ) / b_val ;
 
   kelvin_temp += 1 / base_temp ;
@@ -64,7 +62,7 @@ wheatstone_resistance( const Voltage bridge , const Voltage input , const Resist
 
   } /* if */
 
-  unknown_ohms = ohms * numerator / denominator ;
+  unknown_ohms = static_cast< Resistance >( round( ohms * numerator / denominator ) ) ;
 
   return  unknown_ohms ;
 
