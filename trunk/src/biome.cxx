@@ -30,8 +30,11 @@ typedef  std::basic_ioserialstream< char , std::char_traits< char > , AVR_Comm::
 
 
 // A constant for the resistance of our bridge legs
-const uint16_t  bridge_leg_ohms   = 9700 ;
-const uint16_t  input_millivolts  = 5120 ;
+const Kelvin      base_temp         = 273.15 ;
+const Resistance  base_ohms         = 2625 ;
+const Resistance  bridge_leg_ohms   = 9720 ;
+const Voltage     input_millivolts  = 5120 ;
+const Therm_Beta  ntc_beta          = 3330 ;
 
 
 //  This is just a generic delay loop
@@ -79,7 +82,7 @@ do_work()
   while( true )
   {
     int32_t               adc_value  = 0 ;
-    int16_t               millivolts = 0 ;
+    Voltage               millivolts = 0 ;
 
     for( int8_t i = 0 ; i < sample_size ; i++ )
     {
@@ -96,9 +99,14 @@ do_work()
     // or in our case, 1 * 2560 / 512 = 5 
     millivolts  += adc_value * 5 ;
 
-    const uint16_t  therm_ohms  = wheatstone_resistance( bridge_leg_ohms , input_millivolts , millivolts ) ;
+    const Resistance  therm_ohms  = wheatstone_resistance( bridge_leg_ohms , input_millivolts , millivolts ) ;
+    const Kelvin      k_temp      = thermistor_temp( therm_ohms , base_temp , base_ohms , ntc_beta ) ;
+    const Centigrade  c_temp      = k_temp - 273.15 ;
 
-    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << millivolts << '\t' << therm_ohms << "\r\n" ;
+    //console << "Bridge MV = " << millivolts << "\tInput MV = " << input_millivolts << "\r\n" ;
+
+    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << millivolts
+            << '\t' << therm_ohms << '\t' << k_temp << '\t' << c_temp << "\r\n" ;
 
   } /* while */
 
