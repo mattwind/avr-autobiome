@@ -31,7 +31,7 @@ typedef  std::basic_ioserialstream< char , std::char_traits< char > , AVR_Comm::
 
 // A constant for the resistance of our bridge legs
 const Kelvin      base_temp         = 273.15 ;
-const Resistance  base_ohms         = 2625 ;
+const Resistance  base_ohms         = 26250 ;
 const Resistance  bridge_leg_ohms   = 9720 ;
 const Voltage     input_millivolts  = 5120 ;
 const Therm_Beta  ntc_beta          = 3330 ;
@@ -81,8 +81,8 @@ do_work()
 
   while( true )
   {
-    int32_t               adc_value  = 0 ;
-    Voltage               millivolts = 0 ;
+    int32_t               adc_value         = 0 ;
+    Voltage               bridge_millivolts = 0 ;
 
     for( int8_t i = 0 ; i < sample_size ; i++ )
     {
@@ -97,15 +97,15 @@ do_work()
     // We are using an internal reference voltage of 2560 millivolts and a gain of 1.  The actual
     // voltage reading per page 241 of the Atmel Datasheet doc2467.pdf is  adc_value * gain * v_ref / 512
     // or in our case, 1 * 2560 / 512 = 5 
-    millivolts  += adc_value * 5 ;
+    bridge_millivolts  += adc_value * 5 ;
 
-    const Resistance  therm_ohms  = wheatstone_resistance( bridge_leg_ohms , input_millivolts , millivolts ) ;
+    const Resistance  therm_ohms  = wheatstone_resistance( bridge_millivolts , input_millivolts , bridge_leg_ohms ) ;
     const Kelvin      k_temp      = thermistor_temp( therm_ohms , base_temp , base_ohms , ntc_beta ) ;
     const Centigrade  c_temp      = k_temp - 273.15 ;
 
     //console << "Bridge MV = " << millivolts << "\tInput MV = " << input_millivolts << "\r\n" ;
 
-    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << millivolts
+    console << std::hex << adc_value << '\t' << std::dec << (int) adc_value << '\t' << bridge_millivolts
             << '\t' << therm_ohms << '\t' << k_temp << '\t' << c_temp << "\r\n" ;
 
   } /* while */

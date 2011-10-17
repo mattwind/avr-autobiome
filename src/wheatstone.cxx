@@ -13,6 +13,18 @@ namespace Autobiome
 
 
 double
+bridge_balance( const Voltage bridge , const Voltage input )
+{
+  double  balance_ratio = bridge / input ;
+
+  balance_ratio *= 2 ;
+
+  return  balance_ratio ;
+
+} /* bridge_balance( const Voltage , const Voltage ) */
+
+
+Kelvin
 thermistor_temp(
     const Resistance therm_ohms ,
     const Kelvin base_temp ,
@@ -25,7 +37,7 @@ thermistor_temp(
 
   kelvin_temp += 1 / base_temp ;
 
-  return  kelvin_temp ;
+  return  1 / kelvin_temp ;
 
 } /* thermistor_temp( const Resistance , const Kelvin , const Resistance , const Thermistor_Beta ) */
 
@@ -41,7 +53,7 @@ wheatstone_resistance( const Voltage bridge , const Voltage input , const Resist
   CHECK_NOT_ZERO( bridge ) ;
 
   // This calculates the 2Vb/Vi constant that repeats in the Wheatstone bridge equation
-  const double  bridge_K    = 2.0 * bridge / (double) input ;
+  const double  bridge_K    = bridge_balance( bridge , input ) ;
   const double  denominator = 1 - bridge_K ;
   const double  numerator   = 1 + bridge_K ;
 
