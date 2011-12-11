@@ -34,7 +34,7 @@ typedef  std::basic_ioserialstream< char , std::char_traits< char > , AVR_Comm::
 const Kelvin      base_temp         = 273.15 ;
 const Resistance  base_ohms         = 26250 ;
 const Resistance  bridge_leg_ohms   = 9720 ;
-const Voltage     input_millivolts  = 5120 ;
+const Voltage     input_millivolts  = 5060 ;
 const Therm_Beta  ntc_beta          = 3330 ;
 
 
